@@ -69,38 +69,55 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg shadow-indigo-500/30">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-5 text-white relative overflow-hidden shadow-lg shadow-indigo-500/30">
                 <div class="absolute right-0 top-0 -mr-8 -mt-8 w-32 h-32 bg-white rounded-full opacity-10 blur-2xl"></div>
-                <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-xl mb-4 relative z-10 backdrop-blur-sm">
+                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-lg mb-3 relative z-10 backdrop-blur-sm">
                     <i class="fas fa-wallet"></i>
                 </div>
                 <div class="relative z-10">
-                    <div class="text-xs font-bold text-indigo-100 uppercase tracking-wider mb-1">Total Kas Keseluruhan</div>
-                    <div class="text-3xl font-black">Rp{{ number_format($totalKeseluruhan, 0, ',', '.') }}</div>
+                    <div class="text-[10px] font-bold text-indigo-100 uppercase tracking-wider mb-1">Sisa Kas Saat Ini</div>
+                    <div class="text-2xl font-black">Rp{{ number_format($sisaKas, 0, ',', '.') }}</div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col justify-between relative overflow-hidden shadow-sm">
-                <div class="flex items-center gap-4 mb-2">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
-                        <i class="fas fa-calendar-check"></i>
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between relative overflow-hidden shadow-sm">
+                <div class="flex items-start gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                        <i class="fas fa-arrow-down"></i>
                     </div>
                     <div>
-                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Denda Dibayar (Bulan Ini)</div>
-                        <div class="text-2xl font-black text-slate-800">Rp{{ number_format($totalDendaBulanIni, 0, ',', '.') }}</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Pemasukan</div>
+                        <div class="text-xl font-black text-slate-800">Rp{{ number_format($totalKeseluruhan, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col justify-between relative overflow-hidden shadow-sm">
-                <div class="flex items-center gap-4 mb-2">
-                    <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl">
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between relative overflow-hidden shadow-sm">
+                <div class="flex items-start gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg shrink-0">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="w-full">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex justify-between items-center w-full">
+                            <span>Total Pengeluaran</span>
+                        </div>
+                        <div class="text-xl font-black text-rose-600 mb-2">Rp{{ number_format($totalPengeluaran, 0, ',', '.') }}</div>
+                        <button onclick="document.getElementById('modalPengeluaran').classList.remove('hidden')" class="w-full text-[10px] bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white font-bold px-2 py-1.5 rounded-lg border border-rose-100 hover:border-rose-500 transition-colors">
+                            Kurangi Kas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between relative overflow-hidden shadow-sm">
+                <div class="flex items-start gap-3 mb-2">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg shrink-0">
                         <i class="fas fa-exclamation-triangle"></i>
                     </div>
                     <div>
-                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tunggakan (Bulan Ini)</div>
-                        <div class="text-2xl font-black text-rose-600">Rp{{ number_format($totalDendaBelumDibayar, 0, ',', '.') }}</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tunggakan (Bulan Ini)</div>
+                        <div class="text-xl font-black text-amber-600">Rp{{ number_format($totalDendaBelumDibayar, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>
@@ -272,4 +289,39 @@
             });
         });
     </script>
+
+    <!-- Modal Pengeluaran -->
+    <div id="modalPengeluaran" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                    <h3 class="font-bold text-slate-800 flex items-center">
+                        <i class="fas fa-money-bill-wave text-rose-500 mr-2"></i> Kurangi Kas Denda
+                    </h3>
+                    <button onclick="document.getElementById('modalPengeluaran').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form action="/laporan/denda/pengeluaran" method="POST" class="p-6" data-confirm="Apakah Anda yakin ingin mencatat pengeluaran ini? Tindakan ini akan mengurangi sisa kas denda secara permanen.">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Keterangan / Tujuan Pengeluaran</label>
+                        <input type="text" name="keterangan" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm" placeholder="Contoh: Beli buku baru, biaya admin...">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Jumlah (Rp)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 font-bold">Rp</span>
+                            <input type="number" name="jumlah" required min="1" max="{{ $sisaKas }}" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-sm font-bold" placeholder="0">
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-1">Maksimal: Rp{{ number_format($sisaKas, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="document.getElementById('modalPengeluaran').classList.add('hidden')" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors text-sm">Batal</button>
+                        <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-rose-600 text-white font-bold hover:bg-rose-700 transition-colors shadow-sm shadow-rose-500/30 text-sm">Simpan Pengeluaran</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

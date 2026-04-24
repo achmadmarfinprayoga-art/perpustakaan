@@ -120,25 +120,28 @@ class PeminjamanController extends Controller
             $peminjaman->status = 'dikembalikan';
             $peminjaman->tanggal_kembali = now()->format('Y-m-d');
             
-            $denda = 0;
-            if ($peminjaman->batas_pengembalian) {
-                $batas = \Carbon\Carbon::parse($peminjaman->batas_pengembalian)->startOfDay();
-                $kembali = \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->startOfDay();
-                
-                if ($kembali->greaterThan($batas)) {
-                    $selisih = $kembali->diffInDays($batas);
-                    $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
-                    $denda = $selisih * $dendaHarian;
+            // Re-calculate fine if not paid
+            if (!$peminjaman->is_paid) {
+                $denda = 0;
+                if ($peminjaman->batas_pengembalian) {
+                    $batas = \Carbon\Carbon::parse($peminjaman->batas_pengembalian)->startOfDay();
+                    $kembali = \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->startOfDay();
+                    
+                    if ($kembali->greaterThan($batas)) {
+                        $selisih = $kembali->diffInDays($batas);
+                        $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
+                        $denda = $selisih * $dendaHarian;
+                    }
                 }
+                $peminjaman->denda = $denda;
+                $peminjaman->is_paid = $denda > 0 ? false : true;
             }
-            $peminjaman->denda = $denda;
-            $peminjaman->is_paid = $denda > 0 ? false : true; // Auto paid if no fine
             
             $peminjaman->buku->increment('stok');
             $peminjaman->save();
             
             $pesan = 'Buku berhasil dikembalikan.';
-            if ($peminjaman->denda > 0) {
+            if ($peminjaman->denda > 0 && !$peminjaman->is_paid) {
                 $pesan .= ' Silakan lakukan pembayaran denda.';
             }
             
@@ -151,6 +154,18 @@ class PeminjamanController extends Controller
     public function payFine($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
+        
+        // If paid before returned, save the current estimasi as denda
+        if ($peminjaman->status === 'dipinjam') {
+            $today = \Carbon\Carbon::today();
+            $batas = \Carbon\Carbon::parse($peminjaman->batas_pengembalian)->startOfDay();
+            if ($today->gt($batas)) {
+                $selisih = $batas->diffInDays($today);
+                $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
+                $peminjaman->denda = $selisih * $dendaHarian;
+            }
+        }
+
         $peminjaman->is_paid = true;
         $peminjaman->save();
 

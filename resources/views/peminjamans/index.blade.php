@@ -146,6 +146,16 @@
                                                         <i class="fas fa-undo mr-1.5 flex-shrink-0"></i> Kembalikan
                                                     </button>
                                                 </form>
+                                                @if($p->estimasi_denda > 0 && !$p->is_paid)
+                                                <form action="/peminjaman/{{ $p->id }}/bayar-denda" method="POST" class="w-full mt-1">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="w-full px-3 py-2 rounded-xl bg-emerald-600 text-white text-[11px] font-bold flex items-center justify-center hover:bg-emerald-700 transition-all duration-300 shadow-sm"
+                                                        title="Bayar Denda">
+                                                        <i class="fas fa-money-bill-wave mr-1.5 flex-shrink-0"></i> Bayar Denda
+                                                    </button>
+                                                </form>
+                                                @endif
                                             @elseif ($p->status === 'dikembalikan' && !$p->is_paid && $p->denda > 0)
                                                 <form action="/peminjaman/{{ $p->id }}/bayar-denda" method="POST" class="w-full">
                                                     @csrf

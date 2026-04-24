@@ -21,53 +21,20 @@
 
                 <div class="space-y-10">
                     
-                    <!-- Area Identitas -->
+                    <!-- Area Tema & Tampilan -->
                     <section>
                         <h3 class="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100 flex items-center">
-                            <i class="fas fa-building text-indigo-500 w-6"></i> Identitas Instansi
+                            <i class="fas fa-palette text-indigo-500 w-6"></i> Pengaturan Tema & Tampilan
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Nama Perpustakaan</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                                        <i class="fas fa-university"></i>
-                                    </span>
-                                    <input type="text" name="nama_perpustakaan" value="{{ $settings['nama_perpustakaan'] ?? 'Perpustakaan Cerdas' }}" 
-                                        class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all font-semibold text-slate-700"
-                                        placeholder="Contoh: Perpustakaan Nasional Daerah Y">
-                                </div>
-                            </div>
-                            
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Telepon / Kontak</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                                        <i class="fas fa-phone-alt"></i>
-                                    </span>
-                                    <input type="text" name="kontak_perpustakaan" value="{{ $settings['kontak_perpustakaan'] ?? '0812-3456-7890' }}" 
-                                        class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all font-semibold text-slate-700"
-                                        placeholder="0812-XXXX-XXXX">
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Warna Utama (Primary Color)</label>
+                                <p class="text-[11px] text-slate-500 mb-3">Pilih warna utama yang akan digunakan untuk menu navigasi, tombol utama, dan aksen keseluruhan aplikasi.</p>
+                                <div class="flex items-center gap-4">
+                                    <input type="color" name="warna_utama" value="{{ $settings['warna_utama'] ?? '#4f46e5' }}" 
+                                        class="h-12 w-20 cursor-pointer rounded-xl border border-slate-200">
+                                    <input type="text" value="{{ $settings['warna_utama'] ?? '#4f46e5' }}" readonly class="w-32 py-2 px-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-700">
                                 </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                                <div class="relative">
-                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                    <input type="email" name="email_perpustakaan" value="{{ $settings['email_perpustakaan'] ?? 'admin@perpus.com' }}" 
-                                        class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all font-semibold text-slate-700"
-                                        placeholder="admin@perpus.com">
-                                </div>
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Lengkap</label>
-                                <textarea name="alamat_perpustakaan" rows="3"
-                                    class="block w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all font-semibold text-slate-700 placeholder-slate-400"
-                                    placeholder="Masukkan alamat lengkap perpustakaan di sini...">{{ $settings['alamat_perpustakaan'] ?? 'Jl. Merdeka No. 1, Kota Pusat' }}</textarea>
                             </div>
                         </div>
                     </section>

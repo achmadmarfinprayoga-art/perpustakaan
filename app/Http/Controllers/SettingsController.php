@@ -17,10 +17,15 @@ class SettingsController extends Controller
     {
         $data = $request->except(['_token', '_method']);
 
-        // Validasi opsional khusus denda harian
         if (isset($data['denda_harian'])) {
             $request->validate([
                 'denda_harian' => 'required|integer|min:0',
+            ]);
+        }
+        
+        if (isset($data['warna_utama'])) {
+            $request->validate([
+                'warna_utama' => 'required|string|max:7',
             ]);
         }
 

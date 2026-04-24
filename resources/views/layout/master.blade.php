@@ -12,6 +12,20 @@
     
     {{-- Tailwind CDN Fallback --}}
     <script src="https://cdn.tailwindcss.com"></script>
+    @php
+        $warnaUtama = \App\Models\Setting::where('key', 'warna_utama')->value('value') ?? '#4f46e5';
+    @endphp
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '{{ $warnaUtama }}',
+                    }
+                }
+            }
+        }
+    </script>
     
     {{-- Font Awesome 6 CDN for icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -49,7 +63,7 @@
         {{-- Sidebar --}}
         <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-2xl transition-all duration-300 md:relative absolute z-40 h-full">
             <div class="p-6 border-b border-white/10 flex items-center space-x-3">
-                <div class="w-10 h-10 bg-indigo-500 rounded-xl flex shadow-lg items-center justify-center">
+                <div class="w-10 h-10 bg-primary rounded-xl flex shadow-lg items-center justify-center">
                     <i class="fas fa-book-open text-xl text-white"></i>
                 </div>
                 <h1 class="text-xl font-bold tracking-wide">Perpustakaan</h1>
@@ -58,43 +72,43 @@
             <div class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
                 <p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Menu Utama</p>
                 
-                <a href="/" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('/') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('/') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-home w-5 text-center"></i>
                     <span class="font-medium">Dashboard</span>
                 </a>
                 
-                <a href="/siswa" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('siswa*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/siswa" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('siswa*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-users w-5 text-center"></i>
                     <span class="font-medium">Mst Siswa</span>
                 </a>
                 
-                <a href="/buku" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('buku*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/buku" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('buku*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-book w-5 text-center"></i>
                     <span class="font-medium">Mst Buku</span>
                 </a>
                 
-                <a href="/kategori" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('kategori*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/kategori" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('kategori*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-tags w-5 text-center"></i>
                     <span class="font-medium">Kategori Buku</span>
                 </a>
 
                 <p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mt-6 mb-2">Transaksi</p>
 
-                <a href="/peminjaman" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('peminjaman*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/peminjaman" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('peminjaman*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-hand-holding w-5 text-center"></i>
                     <span class="font-medium">Peminjaman</span>
                 </a>
 
                 <p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mt-6 mb-2">Laporan</p>
 
-                <a href="/laporan/denda" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('laporan/denda') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/laporan/denda" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('laporan/denda') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-file-invoice-dollar w-5 text-center"></i>
                     <span class="font-medium">Laporan Denda</span>
                 </a>
 
                 <p class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mt-6 mb-2">Sistem</p>
 
-                <a href="/settings" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('settings*') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
+                <a href="/settings" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 {{ request()->is('settings*') ? 'bg-primary text-white shadow-md shadow-primary/20' : 'text-slate-300 hover:bg-white/10 hover:text-white' }}">
                     <i class="fas fa-cog w-5 text-center"></i>
                     <span class="font-medium">Pengaturan</span>
                 </a>
@@ -103,7 +117,7 @@
             <div class="p-4 border-t border-white/10">
                 <div class="flex items-center justify-between px-2 py-2">
                     <div class="flex items-center space-x-3 overflow-hidden">
-                        <div class="w-9 h-9 rounded-full bg-indigo-600/70 flex items-center justify-center flex-shrink-0">
+                        <div class="w-9 h-9 rounded-full bg-primary/70 flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-user text-sm text-white"></i>
                         </div>
                         <div class="min-w-0">

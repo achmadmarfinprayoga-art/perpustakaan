@@ -72,4 +72,5 @@ Route::middleware('auth')->group(function () {
 
     // Laporan
     Route::get('/laporan/denda', [LaporanController::class, 'denda']);
+    Route::post('/laporan/denda/pengeluaran', [LaporanController::class, 'storePengeluaran']);
 });

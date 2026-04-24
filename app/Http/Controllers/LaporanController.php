@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Peminjaman;
+use App\Models\PengeluaranKas;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -29,6 +30,8 @@ class LaporanController extends Controller
         $totalDendaBelumDibayar = $peminjamans->where('is_paid', false)->sum('denda');
 
         $totalKeseluruhan = Peminjaman::where('is_paid', true)->sum('denda');
+        $totalPengeluaran = PengeluaranKas::sum('jumlah');
+        $sisaKas = $totalKeseluruhan - $totalPengeluaran;
 
         // Untuk Chart/Summary bulanan denda dibayar
         $summaryBulanan = Peminjaman::select(
@@ -49,6 +52,25 @@ class LaporanController extends Controller
             9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
         ];
 
-        return view('laporan.denda', compact('peminjamans', 'bulan', 'tahun', 'totalDendaBulanIni', 'totalDendaBelumDibayar', 'totalKeseluruhan', 'summaryBulanan', 'arrBulan'));
+        return view('laporan.denda', compact('peminjamans', 'bulan', 'tahun', 'totalDendaBulanIni', 'totalDendaBelumDibayar', 'totalKeseluruhan', 'summaryBulanan', 'arrBulan', 'totalPengeluaran', 'sisaKas'));
+    }
+
+    public function storePengeluaran(Request $request)
+    {
+        $request->validate([
+            'keterangan' => 'required|string|max:255',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        $totalPemasukan = Peminjaman::where('is_paid', true)->sum('denda');
+        $totalPengeluaranSaatIni = PengeluaranKas::sum('jumlah');
+        
+        if ($request->jumlah > ($totalPemasukan - $totalPengeluaranSaatIni)) {
+            return back()->with('error', 'Saldo kas tidak mencukupi untuk pengeluaran ini.');
+        }
+
+        PengeluaranKas::create($request->only(['keterangan', 'jumlah']));
+
+        return back()->with('success', 'Pengeluaran kas berhasil dicatat.');
     }
 }

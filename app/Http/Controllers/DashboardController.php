@@ -22,6 +22,13 @@ class DashboardController extends Controller
 
         $totalKategori = Kategori::count();
 
+        $bukuTerpopuler = Peminjaman::with('buku')
+            ->select('buku_id', \Illuminate\Support\Facades\DB::raw('count(*) as total_pinjam'))
+            ->groupBy('buku_id')
+            ->orderByDesc('total_pinjam')
+            ->limit(5)
+            ->get();
+
         return view('welcome', compact(
             'totalSiswa', 
             'siswaAktif', 
@@ -29,7 +36,8 @@ class DashboardController extends Controller
             'totalJudul',
             'bukuTersedia', 
             'bukuDipinjam', 
-            'totalKategori'
+            'totalKategori',
+            'bukuTerpopuler'
         ));
     }
 }
