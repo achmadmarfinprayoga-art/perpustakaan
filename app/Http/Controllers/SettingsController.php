@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
@@ -21,6 +22,16 @@ class SettingsController extends Controller
             $request->validate([
                 'denda_harian' => 'required|integer|min:0',
             ]);
+        }
+        
+        if ($request->hasFile('logo')) {
+            $request->validate([
+                'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            
+            $logoPath = $request->file('logo')->store('public/images');
+            // Remove 'public/' from the path to store in db
+            $data['logo'] = str_replace('public/', 'storage/', $logoPath);
         }
         
         if (isset($data['warna_utama'])) {

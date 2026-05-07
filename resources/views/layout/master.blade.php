@@ -13,10 +13,20 @@
     {{-- Tailwind CDN Fallback --}}
     <script src="https://cdn.tailwindcss.com"></script>
     @php
-        $warnaUtama = \App\Models\Setting::where('key', 'warna_utama')->value('value') ?? '#4f46e5';
+        $settings = \App\Models\Setting::pluck('value', 'key');
+        $warnaUtama = $settings['warna_utama'] ?? '#4f46e5';
+        $logo = $settings['logo'] ?? null;
     @endphp
     <script>
+        // Check local storage for dark mode
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+        
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -56,17 +66,23 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-indigo-50 min-h-screen antialiased text-slate-800">
+<body class="bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800 min-h-screen antialiased text-slate-800 dark:text-slate-200 transition-colors duration-300">
     
     <div class="flex h-screen overflow-hidden">
         
         {{-- Sidebar --}}
-        <aside class="w-64 bg-slate-900 text-white flex flex-col shadow-2xl transition-all duration-300 md:relative absolute z-40 h-full">
-            <div class="p-6 border-b border-white/10 flex items-center space-x-3">
-                <div class="w-10 h-10 bg-primary rounded-xl flex shadow-lg items-center justify-center">
-                    <i class="fas fa-book-open text-xl text-white"></i>
-                </div>
-                <h1 class="text-xl font-bold tracking-wide">Perpustakaan</h1>
+        <aside class="w-64 bg-slate-900 dark:bg-slate-950 text-white flex flex-col shadow-2xl transition-all duration-300 md:relative absolute z-40 h-full border-r border-slate-800">
+            <div class="p-6 border-b border-white/10 flex items-center justify-center space-x-3">
+                @if($logo)
+                    <div class="w-[85%] h-16 flex items-center justify-center bg-white/95 rounded-xl p-2 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all">
+                        <img src="{{ asset($logo) }}" alt="Logo" class="max-w-full h-full object-contain filter drop-shadow-sm">
+                    </div>
+                @else
+                    <div class="w-10 h-10 bg-primary rounded-xl flex shadow-lg items-center justify-center">
+                        <i class="fas fa-book-open text-xl text-white"></i>
+                    </div>
+                    <h1 class="text-xl font-bold tracking-wide">Perpustakaan</h1>
+                @endif
             </div>
             
             <div class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
@@ -138,27 +154,33 @@
         </aside>
 
         {{-- Main Wrapper for Header & Content --}}
-        <div class="flex-1 flex flex-col h-full relative w-full overflow-hidden">
+        <div class="flex-1 flex flex-col h-full relative w-full overflow-hidden bg-transparent">
             
             {{-- Header/Navbar --}}
-            <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/60 sticky top-0 z-30 h-16 flex items-center justify-between px-6">
+            <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200/60 dark:border-slate-700/60 sticky top-0 z-30 h-16 flex items-center justify-between px-6 transition-colors duration-300">
                 <div class="flex items-center">
                     {{-- Mobile menu button could go here --}}
-                    <h2 class="text-xl font-bold text-slate-800">@yield('header', 'Dashboard')</h2>
+                    <h2 class="text-xl font-bold text-slate-800 dark:text-white">@yield('header', 'Dashboard')</h2>
                 </div>
                 <div class="flex items-center space-x-3 hidden md:flex">
-                    <span class="text-sm font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">Sistem Manajemen Perpustakaan</span>
+                    <span class="text-sm font-medium text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">Sistem Manajemen Perpustakaan</span>
                     
-                    <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+                    <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2"></div>
 
                     <div class="flex items-center space-x-3">
+                        <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                            <i id="theme-toggle-icon" class="fas fa-moon"></i>
+                        </button>
+                        
+                        <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-1"></div>
+                        
                         <div class="text-right">
-                            <p class="text-xs font-bold text-slate-800 leading-none">{{ Auth::user()->name ?? '' }}</p>
-                            <p class="text-[10px] text-indigo-500 font-medium uppercase leading-tight">{{ Auth::user()->role ?? '' }}</p>
+                            <p class="text-xs font-bold text-slate-800 dark:text-slate-200 leading-none">{{ Auth::user()->name ?? '' }}</p>
+                            <p class="text-[10px] text-indigo-500 dark:text-indigo-400 font-medium uppercase leading-tight">{{ Auth::user()->role ?? '' }}</p>
                         </div>
                         <form method="POST" action="/logout">
                             @csrf
-                            <button type="submit" class="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-red-500 bg-slate-100 hover:bg-red-50 px-4 py-2 rounded-xl transition-all duration-200 border border-transparent hover:border-red-100">
+                            <button type="submit" class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-900/30 px-4 py-2 rounded-xl transition-all duration-200 border border-transparent hover:border-red-100 dark:hover:border-red-900/50">
                                 <i class="fas fa-power-off text-[10px]"></i>
                                 LOGOUT
                             </button>
@@ -168,7 +190,7 @@
             </header>
             
             {{-- Main Content --}}
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50/50 p-6 md:p-8 w-full">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-6 md:p-8 w-full transition-colors duration-300">
                 @if (session('success'))
                     <div class="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl p-4 shadow-sm">
                         <div class="flex items-center">
@@ -220,6 +242,34 @@
 
     {{-- Global Scripts --}}
     <script>
+        // Dark Mode Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+        // Initial icon state
+        if (document.documentElement.classList.contains('dark')) {
+            themeToggleIcon.classList.remove('fa-moon');
+            themeToggleIcon.classList.add('fa-sun');
+        } else {
+            themeToggleIcon.classList.remove('fa-sun');
+            themeToggleIcon.classList.add('fa-moon');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            // toggle icons
+            themeToggleIcon.classList.toggle('fa-moon');
+            themeToggleIcon.classList.toggle('fa-sun');
+
+            // toggle theme
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+
         // Global delete confirmation
         function confirmDelete(title = 'Apakah Anda yakin?', text = 'Data ini akan dihapus secara permanen!', icon = 'warning') {
             return Swal.fire({

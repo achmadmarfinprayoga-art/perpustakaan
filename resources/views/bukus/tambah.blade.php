@@ -35,14 +35,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="space-y-2">
-                    <label for="isbn" class="block text-sm font-bold text-slate-700">ISBN</label>
-                    <input type="text" name="isbn" id="isbn"
-                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all font-medium"
-                        placeholder="Nomor ISBN">
-                </div>
-
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label for="tahun_terbit" class="block text-sm font-bold text-slate-700">Tahun Terbit</label>
                     <input type="number" name="tahun_terbit" id="tahun_terbit" min="1900" max="2099"

@@ -73,10 +73,6 @@
                     
                     <div class="bg-slate-50/80 rounded-2xl p-5 border border-slate-100 space-y-4">
                         <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">ISBN</p>
-                            <p class="font-semibold text-slate-800 font-mono">{{ $buku->isbn ?? 'Tidak ada ISBN' }}</p>
-                        </div>
-                        <div>
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Lokasi Rak</p>
                             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-indigo-100 text-indigo-700 rounded-lg font-bold text-sm">
                                 <i class="fas fa-box"></i> {{ $buku->rak ?? 'Belum ditentukan' }}

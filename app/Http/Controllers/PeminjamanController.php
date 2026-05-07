@@ -52,12 +52,12 @@ class PeminjamanController extends Controller
 
                 if ($p->status === 'dipinjam') {
                     if ($today->gt($batas)) {
-                        $p->hari_terlambat = $batas->diffInDays($today);
+                        $p->hari_terlambat = abs($batas->diffInDays($today));
                     }
                 } elseif ($p->status === 'dikembalikan' && $p->tanggal_kembali) {
                     $kembali = \Carbon\Carbon::parse($p->tanggal_kembali)->startOfDay();
                     if ($kembali->gt($batas)) {
-                        $p->hari_terlambat = $batas->diffInDays($kembali);
+                        $p->hari_terlambat = abs($batas->diffInDays($kembali));
                     }
                 }
             }
@@ -128,7 +128,7 @@ class PeminjamanController extends Controller
                     $kembali = \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->startOfDay();
                     
                     if ($kembali->greaterThan($batas)) {
-                        $selisih = $kembali->diffInDays($batas);
+                        $selisih = abs($kembali->diffInDays($batas));
                         $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
                         $denda = $selisih * $dendaHarian;
                     }
@@ -160,7 +160,7 @@ class PeminjamanController extends Controller
             $today = \Carbon\Carbon::today();
             $batas = \Carbon\Carbon::parse($peminjaman->batas_pengembalian)->startOfDay();
             if ($today->gt($batas)) {
-                $selisih = $batas->diffInDays($today);
+                $selisih = abs($batas->diffInDays($today));
                 $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
                 $peminjaman->denda = $selisih * $dendaHarian;
             }
@@ -215,7 +215,7 @@ class PeminjamanController extends Controller
                     
                     if ($kembaliDate->greaterThan($batasDate)) {
                         $dendaHarian = (int) Setting::where('key', 'denda_harian')->value('value') ?? 5000;
-                        $validatedData['denda'] = $kembaliDate->diffInDays($batasDate) * $dendaHarian;
+                        $validatedData['denda'] = abs($kembaliDate->diffInDays($batasDate)) * $dendaHarian;
                         $validatedData['is_paid'] = false;
                     } else {
                         $validatedData['denda'] = 0;

@@ -25,7 +25,7 @@
                     </div>
                     <input type="text" name="search" value="{{ $search }}" 
                         class="block w-full pl-10 pr-3 py-2.5 bg-white border border-slate-200 rounded-xl text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all" 
-                        placeholder="Cari Judul atau ISBN...">
+                        placeholder="Cari Judul Buku...">
                 </div>
                 
                 <div class="w-full md:w-48">
@@ -57,7 +57,7 @@
                                 <th scope="col" class="px-6 py-4 font-semibold w-16 text-center">No</th>
                                 <th scope="col" class="px-6 py-4 font-semibold">Buku</th>
                                 <th scope="col" class="px-6 py-4 font-semibold">Kategori</th>
-                                <th scope="col" class="px-6 py-4 font-semibold">ISBN & Rak</th>
+                                <th scope="col" class="px-6 py-4 font-semibold">Rak</th>
                                 <th scope="col" class="px-6 py-4 font-semibold text-center">Stok</th>
                                 <th scope="col" class="px-6 py-4 font-semibold text-center w-40">Aksi</th>
                             </tr>
@@ -90,8 +90,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-slate-700">{{ $buku->isbn ?? '-' }}</div>
-                                        <div class="text-xs text-slate-500 mt-0.5">Rak: {{ $buku->rak ?? '-' }}</div>
+                                        <div class="text-sm font-medium text-slate-700">Rak: {{ $buku->rak ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @if ($buku->stok > 0)

@@ -17,8 +17,7 @@ class BukuController extends Controller
 
         if ($search) {
             $query->where(function($q) use ($search) {
-                $q->where('judul', 'like', "%{$search}%")
-                  ->orWhere('isbn', 'like', "%{$search}%");
+                $q->where('judul', 'like', "%{$search}%");
             });
         }
 
@@ -51,7 +50,6 @@ class BukuController extends Controller
             'judul' => 'required|string|max:255',
             'penulis' => 'required|string|max:255',
             'penerbit' => 'nullable|string|max:255',
-            'isbn' => 'nullable|string|max:20',
             'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'kategori_id' => 'required|exists:kategoris,id',
             'stok' => 'required|integer|min:0',
@@ -84,7 +82,6 @@ class BukuController extends Controller
             'judul' => 'required|string|max:255',
             'penulis' => 'required|string|max:255',
             'penerbit' => 'nullable|string|max:255',
-            'isbn' => 'nullable|string|max:20',
             'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'kategori_id' => 'required|exists:kategoris,id',
             'stok' => 'required|integer|min:0',

@@ -43,15 +43,24 @@
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 sm:p-8">
     
+    @php
+        $logo = \App\Models\Setting::where('key', 'logo')->value('value');
+    @endphp
     <div class="w-full max-w-6xl h-[85vh] min-h-[600px] flex rounded-[2.5rem] overflow-hidden shadow-2xl bg-white relative">
         
         <!-- Left Side: Login Form -->
         <div class="w-full lg:w-5/12 p-8 sm:p-12 md:p-16 flex flex-col justify-center relative z-10 bg-white/95 backdrop-blur-xl">
             <div class="w-full max-w-md mx-auto">
                 <div class="mb-10 text-center lg:text-left">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-500/30 mb-6 transition-transform hover:scale-105">
-                        <i class="fas fa-book-open text-2xl text-white"></i>
-                    </div>
+                    @if($logo)
+                        <div class="inline-flex items-center justify-center h-24 bg-white/95 rounded-2xl p-3 shadow-[0_0_20px_rgba(255,255,255,0.3)] mb-6 transition-transform hover:scale-105 border border-slate-100">
+                            <img src="{{ asset($logo) }}" alt="Logo" class="h-full object-contain filter drop-shadow-sm">
+                        </div>
+                    @else
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-500/30 mb-6 transition-transform hover:scale-105">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                    @endif
                     <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight mb-2">Selamat Datang 👋</h1>
                     <p class="text-slate-500 font-medium">Silakan masuk ke akun Anda untuk mengelola perpustakaan.</p>
                 </div>
